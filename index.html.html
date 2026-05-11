@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>紫薇堂｜紫微斗數・風水命理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700&family=Cinzel+Decorative:wght@400;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --gold-dim: #7a5e25;
+    --ink: #0c0a07;
+    --ink-2: #141009;
+    --ink-3: #1e1810;
+    --red: #8c2020;
+    --red-bright: #c03030;
+    --cream: #f0e8d0;
+    --cream-dim: #b8a87a;
+    --text-main: #e8dfc8;
+    --text-muted: #8a7d65;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--text-main);
+    font-family: 'Noto Serif TC', 'Songti SC', serif;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── STARS CANVAS ── */
+  #stars-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    opacity: 0.45;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: linear-gradient(to bottom, rgba(12,10,7,0.95) 60%, transparent);
+    border-bottom: 0.5px solid rgba(201,168,76,0.2);
+  }
+  .nav-logo {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--cream); font-size: 0.85rem; display: block; letter-spacing: 0.25em; margin-top: -4px; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream-dim); text-decoration: none;
+    font-size: 0.88rem; letter-spacing: 0.12em;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 0.5px; background: var(--gold);
+    transform: scaleX(0); transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold) !important;
+    padding: 0.5rem 1.4rem;
+    border-radius: 2px;
+    transition: background 0.3s !important;
+  }
+  .nav-cta:hover { background: rgba(201,168,76,0.12) !important; }
+  .nav-cta::after { display: none !important; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    overflow: hidden;
+  }
+  .hero-circle {
+    position: absolute;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(201,168,76,0.15);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotate 60s linear infinite;
+  }
+  .hero-circle::before {
+    content: '';
+    position: absolute; inset: 24px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(201,168,76,0.1);
+  }
+  .hero-circle::after {
+    content: '';
+    position: absolute; inset: 52px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(201,168,76,0.07);
+  }
+  @keyframes rotate { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+  /* Bagua trigrams decoration */
+  .bagua-ring {
+    position: absolute;
+    width: 580px; height: 580px;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation: rotate 120s linear infinite reverse;
+    opacity: 0.08;
+  }
+  .bagua-symbol {
+    position: absolute; top: 0; left: 50%;
+    transform-origin: 0 290px;
+    font-size: 1.4rem;
+    color: var(--gold);
+  }
+
+  .hero-tag {
+    font-size: 0.78rem; letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-tag::before, .hero-tag::after {
+    content: ''; flex: 1; max-width: 60px; height: 0.5px;
+    background: var(--gold-dim);
+  }
+  .hero-title {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    line-height: 1.1;
+    color: var(--cream);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 40px rgba(201,168,76,0.2);
+  }
+  .hero-subtitle {
+    font-size: 0.95rem; letter-spacing: 0.35em;
+    color: var(--gold);
+    margin-bottom: 2.5rem;
+  }
+  .hero-desc {
+    max-width: 520px; font-size: 0.95rem;
+    color: var(--text-muted); line-height: 2;
+    margin-bottom: 3rem;
+  }
+  .hero-btns { display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    padding: 0.9rem 2.4rem;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.9rem; font-weight: 700;
+    letter-spacing: 0.15em;
+    border: none; cursor: pointer; border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline {
+    padding: 0.9rem 2.4rem;
+    background: transparent;
+    color: var(--cream);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    border: 1px solid rgba(232,220,200,0.35);
+    cursor: pointer; border-radius: 2px;
+    text-decoration: none;
+    transition: border-color 0.3s, color 0.3s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── SECTION COMMON ── */
+  section { position: relative; z-index: 1; }
+  .section-inner { max-width: 1080px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-label {
+    font-size: 0.73rem; letter-spacing: 0.5em;
+    color: var(--gold-dim);
+    margin-bottom: 0.8rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-label::before { content: ''; width: 28px; height: 0.5px; background: var(--gold-dim); }
+  .section-title {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--cream);
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+  .section-desc {
+    font-size: 0.9rem; color: var(--text-muted);
+    max-width: 560px; line-height: 2;
+    margin-bottom: 3rem;
+  }
+  .gold-divider {
+    width: 48px; height: 1px;
+    background: var(--gold-dim);
+    margin: 1.5rem 0;
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--ink-2); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5px;
+    background: rgba(201,168,76,0.12);
+    border: 0.5px solid rgba(201,168,76,0.12);
+  }
+  .service-card {
+    background: var(--ink-2);
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .service-card:hover { background: #1a1408; }
+  .service-icon {
+    font-size: 2.8rem;
+    margin-bottom: 1.2rem;
+    display: block;
+  }
+  .service-name {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.35rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+  }
+  .service-eng {
+    font-size: 0.7rem; letter-spacing: 0.3em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  .service-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+  .service-items { list-style: none; }
+  .service-items li {
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    padding: 0.4rem 0;
+    border-bottom: 0.5px solid rgba(201,168,76,0.08);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .service-items li::before {
+    content: '◆'; font-size: 0.45rem; color: var(--gold-dim);
+  }
+  .service-price {
+    margin-top: 1.5rem;
+    font-size: 0.82rem; color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+  .service-price strong { font-size: 1.3rem; }
+
+  /* ── FLOW ── */
+  #flow { background: var(--ink); }
+  .flow-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0; position: relative;
+  }
+  .flow-step {
+    padding: 2rem 1.5rem;
+    position: relative;
+    text-align: center;
+  }
+  .flow-step::after {
+    content: '→';
+    position: absolute; right: -0.5rem; top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold-dim); font-size: 1.2rem;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 2.4rem;
+    color: rgba(201,168,76,0.15);
+    line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+  .flow-title {
+    font-size: 0.95rem; color: var(--gold);
+    letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  }
+  .flow-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.8; }
+
+  /* ── BOOKING ── */
+  #booking { background: var(--ink-3); }
+  .booking-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem; align-items: start;
+  }
+  .booking-info h3 {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.1rem; color: var(--cream);
+    margin-bottom: 1.5rem; letter-spacing: 0.08em;
+  }
+  .info-item {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+    margin-bottom: 1.2rem;
+  }
+  .info-icon { font-size: 1.1rem; margin-top: 0.1rem; color: var(--gold); }
+  .info-text { font-size: 0.84rem; color: var(--text-muted); line-height: 1.8; }
+  .info-text strong { color: var(--cream-dim); display: block; font-size: 0.88rem; }
+  .notice-box {
+    background: rgba(201,168,76,0.06);
+    border: 0.5px solid rgba(201,168,76,0.2);
+    border-left: 2px solid var(--gold-dim);
+    padding: 1rem 1.2rem; border-radius: 2px;
+    margin-top: 2rem;
+    font-size: 0.8rem; color: var(--text-muted); line-height: 1.9;
+  }
+
+  /* Form */
+  .booking-form { background: rgba(255,255,255,0.02); border: 0.5px solid rgba(201,168,76,0.15); padding: 2rem; border-radius: 2px; }
+  .form-title {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.2rem; color: var(--gold);
+    letter-spacing: 0.1em; margin-bottom: 1.5rem;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label {
+    display: block; font-size: 0.78rem;
+    color: var(--text-muted); letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%; padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+    color: var(--cream);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.88rem;
+    outline: none; transition: border-color 0.3s;
+    appearance: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--gold-dim); }
+  .form-group select option { background: #1e1810; }
+  .form-group textarea { height: 100px; resize: vertical; }
+  .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.6) sepia(1) saturate(2) hue-rotate(5deg); cursor: pointer; }
+  .form-submit {
+    width: 100%; padding: 1rem;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 0.2em;
+    border: none; cursor: pointer; border-radius: 2px;
+    margin-top: 0.5rem;
+    transition: background 0.3s;
+  }
+  .form-submit:hover { background: var(--gold-light); }
+  .timeslots {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;
+  }
+  .timeslot {
+    padding: 0.35rem 0.8rem;
+    border: 0.5px solid rgba(201,168,76,0.2);
+    border-radius: 2px; font-size: 0.78rem;
+    color: var(--text-muted); cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    font-family: 'Noto Serif TC', serif;
+  }
+  .timeslot:hover { border-color: var(--gold); color: var(--gold); }
+  .timeslot.active { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+  /* ── CONSULTATION ── */
+  #consultation { background: var(--ink-2); }
+  .consult-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  .consult-card {
+    background: rgba(255,255,255,0.02);
+    border: 0.5px solid rgba(201,168,76,0.15);
+    padding: 2rem; border-radius: 2px;
+    transition: border-color 0.3s;
+  }
+  .consult-card:hover { border-color: rgba(201,168,76,0.4); }
+  .consult-type {
+    font-size: 0.7rem; letter-spacing: 0.4em; color: var(--gold-dim);
+    margin-bottom: 0.8rem; text-transform: uppercase;
+  }
+  .consult-name {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.3rem; color: var(--cream);
+    margin-bottom: 0.5rem; letter-spacing: 0.08em;
+  }
+  .consult-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.9; margin-bottom: 1.5rem; }
+  .consult-features { list-style: none; }
+  .consult-features li {
+    font-size: 0.8rem; color: var(--cream-dim);
+    padding: 0.35rem 0; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .consult-features li::before { content: '✦'; font-size: 0.5rem; color: var(--gold); }
+  .consult-link {
+    display: inline-block; margin-top: 1.2rem;
+    font-size: 0.8rem; color: var(--gold);
+    letter-spacing: 0.2em; text-decoration: none;
+    border-bottom: 0.5px solid var(--gold-dim);
+    transition: border-color 0.3s;
+  }
+  .consult-link:hover { border-color: var(--gold); }
+
+  /* ── MASTER ── */
+  #master { background: var(--ink); }
+  .master-wrap {
+    display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: center;
+  }
+  .master-avatar {
+    position: relative;
+  }
+  .master-frame {
+    width: 100%; aspect-ratio: 3/4;
+    background: var(--ink-3);
+    border: 0.5px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 5rem; gap: 0.5rem;
+    position: relative; overflow: hidden;
+  }
+  .master-frame::before {
+    content: '';
+    position: absolute; inset: 12px;
+    border: 0.5px solid rgba(201,168,76,0.08);
+    border-radius: 1px;
+  }
+  .master-frame-label {
+    font-size: 0.75rem; letter-spacing: 0.3em;
+    color: var(--text-muted); margin-top: 0.5rem;
+  }
+  .master-corner {
+    position: absolute; width: 20px; height: 20px;
+    border-color: var(--gold-dim); border-style: solid;
+    border-width: 0;
+  }
+  .master-corner.tl { top: 8px; left: 8px; border-top-width: 1px; border-left-width: 1px; }
+  .master-corner.tr { top: 8px; right: 8px; border-top-width: 1px; border-right-width: 1px; }
+  .master-corner.bl { bottom: 8px; left: 8px; border-bottom-width: 1px; border-left-width: 1px; }
+  .master-corner.br { bottom: 8px; right: 8px; border-bottom-width: 1px; border-right-width: 1px; }
+  .master-name {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 2rem; color: var(--cream); letter-spacing: 0.1em; margin-bottom: 0.3rem;
+  }
+  .master-title-tag {
+    font-size: 0.78rem; letter-spacing: 0.35em; color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .master-bio { font-size: 0.88rem; color: var(--text-muted); line-height: 2.1; margin-bottom: 2rem; }
+  .master-stats {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem;
+    border-top: 0.5px solid rgba(201,168,76,0.15);
+    padding-top: 2rem; margin-top: 0.5rem;
+  }
+  .master-stat-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.6rem; color: var(--gold);
+    display: block; margin-bottom: 0.3rem;
+  }
+  .master-stat-label { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.1em; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--ink-2); }
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1.5rem;
+  }
+  .testimonial {
+    background: rgba(255,255,255,0.025);
+    border: 0.5px solid rgba(201,168,76,0.1);
+    padding: 1.8rem;
+    border-radius: 2px;
+    position: relative;
+  }
+  .testimonial::before {
+    content: '❝';
+    font-size: 3rem; color: rgba(201,168,76,0.08);
+    position: absolute; top: 1rem; right: 1.2rem;
+    line-height: 1;
+  }
+  .testimonial-text { font-size: 0.85rem; color: var(--text-muted); line-height: 2; margin-bottom: 1.2rem; }
+  .testimonial-author { font-size: 0.8rem; color: var(--gold); letter-spacing: 0.1em; }
+  .testimonial-detail { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+  .stars { color: var(--gold); font-size: 0.7rem; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+
+  /* ── FAQ ── */
+  #faq { background: var(--ink); }
+  .faq-list { max-width: 700px; }
+  .faq-item {
+    border-bottom: 0.5px solid rgba(201,168,76,0.1);
+    padding: 1.2rem 0;
+  }
+  .faq-q {
+    font-size: 0.92rem; color: var(--cream);
+    cursor: pointer; display: flex; justify-content: space-between;
+    align-items: center; letter-spacing: 0.05em;
+    user-select: none;
+  }
+  .faq-q span.arrow { color: var(--gold-dim); transition: transform 0.3s; font-size: 0.8rem; }
+  .faq-q.open span.arrow { transform: rotate(180deg); }
+  .faq-a {
+    font-size: 0.83rem; color: var(--text-muted);
+    line-height: 2; max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+  }
+  .faq-a.open { max-height: 300px; padding-top: 0.8rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    background: var(--ink);
+    border-top: 0.5px solid rgba(201,168,76,0.15);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 2rem; color: var(--gold); letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  .footer-tagline { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.3em; margin-bottom: 2rem; }
+  .footer-links { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+  .footer-links a { font-size: 0.8rem; color: var(--text-muted); text-decoration: none; letter-spacing: 0.1em; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-contact { font-size: 0.82rem; color: var(--text-muted); line-height: 2; margin-bottom: 1.5rem; }
+  .footer-bottom { font-size: 0.72rem; color: rgba(138,125,101,0.5); letter-spacing: 0.1em; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200; align-items: center; justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--ink-3);
+    border: 0.5px solid rgba(201,168,76,0.25);
+    max-width: 420px; width: 90%; padding: 2.5rem;
+    border-radius: 2px; text-align: center;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none; color: var(--text-muted);
+    font-size: 1.2rem; cursor: pointer;
+  }
+  .modal h3 { font-family: 'Ma Shan Zheng', serif; font-size: 1.5rem; color: var(--gold); margin-bottom: 1rem; }
+  .modal p { font-size: 0.85rem; color: var(--text-muted); line-height: 2; }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-indicator {
+    position: absolute; bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--text-muted); font-size: 0.7rem; letter-spacing: 0.3em;
+    animation: float 3s ease-in-out infinite;
+  }
+  .scroll-indicator::after {
+    content: '↓'; font-size: 1rem; color: var(--gold-dim);
+  }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .booking-wrap, .master-wrap, .consult-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .master-wrap { gap: 2.5rem; }
+    .hero-circle, .bagua-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">紫薇堂<span>ZIWEI FORTUNE ARTS</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">服務項目</a></li>
+    <li><a href="#master">關於老師</a></li>
+    <li><a href="#consultation">線上諮詢</a></li>
+    <li><a href="#faq">常見問題</a></li>
+    <li><a href="#booking" class="nav-cta">立即預約</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-circle"></div>
+  <div class="bagua-ring" id="bagua"></div>
+
+  <div class="hero-tag">PURPLE STAR ASTROLOGY · FENG SHUI · DESTINY</div>
+  <h1 class="hero-title">紫薇堂</h1>
+  <p class="hero-subtitle">洞察命理　安定居所　開創格局</p>
+  <p class="hero-desc">融合千年紫微斗數星象智慧與傳統風水地理學，為您的人生、事業、居家提供深度命理諮詢與規劃建議。</p>
+  <div class="hero-btns">
+    <a href="#booking" class="btn-primary">立即預約諮詢</a>
+    <a href="#services" class="btn-outline">了解服務項目</a>
+  </div>
+  <div class="scroll-indicator">SCROLL</div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-label">SERVICES</div>
+    <h2 class="section-title">服務項目</h2>
+    <p class="section-desc">以嚴謹的命理學術為根基，結合多年實務經驗，提供個人化深度解析服務。</p>
+    <div class="services-grid">
+      <a href="#booking" class="service-card">
+        <span class="service-icon">🌟</span>
+        <div class="service-name">紫微斗數命盤</div>
+        <div class="service-eng">Zi Wei Dou Shu</div>
+        <p class="service-desc">以出生年月日時排列命盤，精算十二宮位星曜佈局，深入解析命主的先天性格、人生走勢與大限流年。</p>
+        <ul class="service-items">
+          <li>完整命盤繪製解析</li>
+          <li>十年大限流年預測</li>
+          <li>事業財運方向建議</li>
+          <li>婚姻感情格局分析</li>
+          <li>健康注意事項提示</li>
+        </ul>
+        <div class="service-price">諮詢費用 <strong>NT$ 3,800</strong> 起</div>
+      </a>
+      <a href="#booking" class="service-card">
+        <span class="service-icon">🧭</span>
+        <div class="service-name">陽宅風水勘查</div>
+        <div class="service-eng">Feng Shui Audit</div>
+        <p class="service-desc">依據環境地形、建築格局、方位氣場，全面評估住宅或辦公室的風水能量，提供具體調整改善方案。</p>
+        <ul class="service-items">
+          <li>住宅 / 辦公室現場勘查</li>
+          <li>羅盤方位氣場測量</li>
+          <li>財位、文昌位定位</li>
+          <li>煞氣化解與佈局建議</li>
+          <li>書面勘查報告提供</li>
+        </ul>
+        <div class="service-price">諮詢費用 <strong>NT$ 8,000</strong> 起</div>
+      </a>
+      <a href="#booking" class="service-card">
+        <span class="service-icon">💬</span>
+        <div class="service-name">線上問事諮詢</div>
+        <div class="service-eng">Online Consultation</div>
+        <p class="service-desc">透過視訊或文字平台，針對特定議題進行深入諮詢，快速解惑人生重要決策點與短期流年動態。</p>
+        <ul class="service-items">
+          <li>Zoom / LINE 視訊諮詢</li>
+          <li>工作求職轉職分析</li>
+          <li>投資創業時機判斷</li>
+          <li>感情婚姻單一問題</li>
+          <li>60 分鐘深度問答</li>
+        </ul>
+        <div class="service-price">諮詢費用 <strong>NT$ 2,200</strong> 起</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section id="flow">
+  <div class="section-inner">
+    <div class="section-label">PROCESS</div>
+    <h2 class="section-title">預約流程</h2>
+    <div class="gold-divider"></div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-num">01</div>
+        <div class="flow-title">填寫預約表單</div>
+        <div class="flow-desc">選擇服務項目、填寫出生資料及希望諮詢的議題方向</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">02</div>
+        <div class="flow-title">確認與付款</div>
+        <div class="flow-desc">收到預約確認 Email，完成費用轉帳後正式成立預約</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">03</div>
+        <div class="flow-title">命盤預先解析</div>
+        <div class="flow-desc">老師於預約前 1-2 天完成命盤資料整理，針對問題方向預備重點解析</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">04</div>
+        <div class="flow-title">現場 / 線上諮詢</div>
+        <div class="flow-desc">依預約方式進行面對面或視訊深度諮詢，並提供書面摘要</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="section-inner">
+    <div class="section-label">APPOINTMENT</div>
+    <h2 class="section-title">線上預約</h2>
+    <p class="section-desc">請填寫以下資料，我們將於 24 小時內以 Email 或電話與您確認預約細節。</p>
+    <div class="booking-wrap">
+      <div class="booking-info">
+        <h3>📍 實體諮詢地址</h3>
+        <div class="info-item">
+          <span class="info-icon">🏠</span>
+          <div class="info-text">
+            <strong>紫薇堂命理中心</strong>
+            台北市大安區忠孝東路四段 ×× 號 × 樓<br>（近捷運忠孝敦化站 5 號出口，步行 3 分鐘）
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">🕐</span>
+          <div class="info-text">
+            <strong>諮詢時間</strong>
+            週二至週六　10:00 – 18:00<br>週日、週一　公休（特殊預約請洽詢）
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">📞</span>
+          <div class="info-text">
+            <strong>聯絡方式</strong>
+            電話：02-2XXX-XXXX<br>LINE ID：ziwei_tang<br>Email：contact@ziwei-tang.com.tw
+          </div>
+        </div>
+        <div class="notice-box">
+          ⚠️ 注意事項<br>
+          · 預約後請於 48 小時內完成付款以確保名額<br>
+          · 需取消或改期請於 3 日前告知，否則視為棄約<br>
+          · 初次諮詢請提供：生辰八字（年月日時）<br>
+          · 風水勘查請提供：現場平面圖 PDF / 照片
+        </div>
+      </div>
+
+      <div class="booking-form">
+        <div class="form-title">✦ 填寫預約資料</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>姓名 *</label>
+            <input type="text" placeholder="您的稱呼">
+          </div>
+          <div class="form-group">
+            <label>聯絡電話 *</label>
+            <input type="tel" placeholder="09XX-XXX-XXX">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>服務類別 *</label>
+          <select>
+            <option value="">── 請選擇服務項目 ──</option>
+            <option>紫微斗數命盤解析（NT$ 3,800 起）</option>
+            <option>陽宅風水現場勘查（NT$ 8,000 起）</option>
+            <option>線上問事諮詢（NT$ 2,200 起）</option>
+            <option>企業/商辦風水規劃（請洽詢）</option>
+            <option>擇日服務（請洽詢）</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>希望諮詢日期 *</label>
+            <input type="date">
+          </div>
+          <div class="form-group">
+            <label>諮詢方式 *</label>
+            <select>
+              <option>現場面談</option>
+              <option>Zoom 視訊</option>
+              <option>LINE 視訊</option>
+              <option>電話諮詢</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>希望時段</label>
+          <div class="timeslots">
+            <button class="timeslot" onclick="selectTime(this)">10:00</button>
+            <button class="timeslot" onclick="selectTime(this)">11:00</button>
+            <button class="timeslot" onclick="selectTime(this)">13:00</button>
+            <button class="timeslot" onclick="selectTime(this)">14:00</button>
+            <button class="timeslot" onclick="selectTime(this)">15:00</button>
+            <button class="timeslot" onclick="selectTime(this)">16:00</button>
+            <button class="timeslot" onclick="selectTime(this)">17:00</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>出生年月日時（農曆請標注）</label>
+          <input type="text" placeholder="例：民國 72 年 3 月 15 日 午時">
+        </div>
+        <div class="form-group">
+          <label>想諮詢的問題方向</label>
+          <textarea placeholder="簡述您希望了解的議題，例如：事業轉換、感情婚姻、購屋方位……"></textarea>
+        </div>
+        <button class="form-submit" onclick="submitBooking()">✦ 送出預約申請</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSULTATION -->
+<section id="consultation">
+  <div class="section-inner">
+    <div class="section-label">ONLINE CONSULTATION</div>
+    <h2 class="section-title">線上諮詢方案</h2>
+    <p class="section-desc">無法親自前往？提供完整線上服務，足不出戶同樣享有深度命理分析。</p>
+    <div class="consult-grid">
+      <div class="consult-card">
+        <div class="consult-type">PLAN A</div>
+        <div class="consult-name">命盤速覽報告</div>
+        <p class="consult-desc">提交出生資料後，老師以書面方式提供命盤重點整理，適合想快速了解自身格局者。</p>
+        <ul class="consult-features">
+          <li>7 個工作天內交付 PDF 報告</li>
+          <li>命盤圖示 + 文字解析 10 頁以上</li>
+          <li>含一次文字問答補充（3 題以內）</li>
+          <li>費用：NT$ 1,500</li>
+        </ul>
+        <a href="#booking" class="consult-link">立即申請 →</a>
+      </div>
+      <div class="consult-card">
+        <div class="consult-type">PLAN B</div>
+        <div class="consult-name">60 分鐘視訊問事</div>
+        <p class="consult-desc">透過 Zoom 或 LINE 視訊進行即時互動諮詢，可針對多個議題深入討論，雙向溝通最有效率。</p>
+        <ul class="consult-features">
+          <li>60 分鐘即時視訊諮詢</li>
+          <li>議題不限（事業、感情、財運…）</li>
+          <li>諮詢後提供重點摘要筆記</li>
+          <li>費用：NT$ 2,200</li>
+        </ul>
+        <a href="#booking" class="consult-link">預約時段 →</a>
+      </div>
+      <div class="consult-card">
+        <div class="consult-type">PLAN C</div>
+        <div class="consult-name">居家風水遠端診斷</div>
+        <p class="consult-desc">提供住宅平面圖、方位照片及基本資料，老師透過遠端方式進行風水分析並提供改善建議。</p>
+        <ul class="consult-features">
+          <li>需提供：平面圖 + 各方位照片</li>
+          <li>10 個工作天內完成書面報告</li>
+          <li>30 分鐘視訊說明報告內容</li>
+          <li>費用：NT$ 4,500</li>
+        </ul>
+        <a href="#booking" class="consult-link">了解詳情 →</a>
+      </div>
+      <div class="consult-card">
+        <div class="consult-type">PLAN D · PREMIUM</div>
+        <div class="consult-name">全年度命理陪跑</div>
+        <p class="consult-desc">適合希望全年持續追蹤運勢、重大決策前能即時諮詢的客戶，提供最完整的命理守護服務。</p>
+        <ul class="consult-features">
+          <li>年度完整命盤深度解析（2 小時）</li>
+          <li>每季流年更新報告（共 4 份）</li>
+          <li>全年無限制 LINE 文字諮詢</li>
+          <li>費用：NT$ 18,000 / 年</li>
+        </ul>
+        <a href="#booking" class="consult-link">洽詢方案 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MASTER -->
+<section id="master">
+  <div class="section-inner">
+    <div class="section-label">ABOUT THE MASTER</div>
+    <div class="master-wrap">
+      <div class="master-avatar">
+        <div class="master-frame">
+          <div class="master-corner tl"></div>
+          <div class="master-corner tr"></div>
+          <div class="master-corner bl"></div>
+          <div class="master-corner br"></div>
+          <span style="font-size:5rem">🌌</span>
+          <span class="master-frame-label">大師照片</span>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">MASTER</div>
+        <div class="master-name">陳紫薇 老師</div>
+        <div class="master-title-tag">紫微斗數 ‧ 陽宅風水 ‧ 擇日學</div>
+        <div class="gold-divider"></div>
+        <p class="master-bio">
+          自幼隨祖父研習傳統五術，深耕紫微斗數逾二十年，師承南派命理大家，
+          並廣泛涉獵三元、三合風水體系，融貫古典與現代視角，
+          擅長以淺顯易懂的語言，將深奧星象命理轉化為實際可行的人生策略。
+          <br><br>
+          長期受邀於各大企業、建設公司擔任風水顧問，
+          並多次於命理學術研討會發表論文，
+          致力將傳統命學精華傳承推廣，服務超過三千位個人及企業客戶。
+        </p>
+        <div class="master-stats">
+          <div>
+            <span class="master-stat-num">20+</span>
+            <span class="master-stat-label">年執業資歷</span>
+          </div>
+          <div>
+            <span class="master-stat-num">3,000+</span>
+            <span class="master-stat-label">服務案例數</span>
+          </div>
+          <div>
+            <span class="master-stat-num">98%</span>
+            <span class="master-stat-label">客戶滿意度</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="section-label">TESTIMONIALS</div>
+    <h2 class="section-title">客戶回饋</h2>
+    <div class="gold-divider"></div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">原本半信半疑預約了命盤解析，結果老師對我的性格分析簡直精準得可怕，連我自己不願承認的盲點都點出來了。流年大限的建議讓我在事業轉換期做出了正確選擇，非常感謝！</p>
+        <div class="testimonial-author">王 ○ 文</div>
+        <div class="testimonial-detail">紫微斗數命盤解析 ‧ 台北</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">新家裝修前請老師做了風水勘查，報告非常詳細，不只說問題也給了具體的調整建議，連燈具擺放、床頭方向都有考量到。搬進去之後整個居家氛圍真的舒適很多。</p>
+        <div class="testimonial-author">林 ○ 如</div>
+        <div class="testimonial-detail">陽宅風水勘查 ‧ 新北</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">公司搬遷前委託老師評估新辦公室格局，老師指出了幾個影響業績的風水問題並提供化解方案。執行調整後的半年內業績成長明顯，主管同仁都感受到差異。</p>
+        <div class="testimonial-author">張 ○ 強（企業主）</div>
+        <div class="testimonial-detail">商辦風水規劃 ‧ 台中</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">常見問題</h2>
+    <div class="gold-divider"></div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">紫微斗數需要提供哪些資料？<span class="arrow">▼</span></div>
+        <div class="faq-a">需要提供出生年、月、日、時（國曆或農曆皆可，農曆請標注）。出生時間越精確越好，若不確定出生時辰，可以提供大概範圍，老師會以校正方式協助確認。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">諮詢一次大概要多長時間？<span class="arrow">▼</span></div>
+        <div class="faq-a">一般完整命盤諮詢約 90 分鐘至 2 小時；單一問事諮詢約 60 分鐘；風水現場勘查依坪數約 2-3 小時不等。請預留充裕時間，以確保每個問題都能深入討論。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">風水勘查可以遠端進行嗎？<span class="arrow">▼</span></div>
+        <div class="faq-a">可以。提供清晰的住宅平面圖（附指北針方位）、各方位實際照片，老師可進行遠端風水診斷，並以書面報告加視訊說明方式交付。若需精準羅盤丈量則建議現場勘查。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">命理諮詢是否保證準確？<span class="arrow">▼</span></div>
+        <div class="faq-a">命理是一門統計與觀察的學問，解析結果提供趨勢方向與參考建議，而非絕對預測。人有「自由意志」，命盤顯示的是先天傾向與潛在機會，最終仍需結合個人努力與選擇。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">如何取消或更改預約？<span class="arrow">▼</span></div>
+        <div class="faq-a">請於預約日 3 個工作天前聯繫我們（電話或 LINE），可免費改期一次。3 天內取消或當日未到，預付費用恕不退還，但可於 6 個月內補約，敬請見諒。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">紫薇堂</div>
+  <div class="footer-tagline">ZIWEI FORTUNE ARTS ‧ EST. 2003</div>
+  <div class="footer-links">
+    <a href="#services">服務項目</a>
+    <a href="#master">關於老師</a>
+    <a href="#booking">預約諮詢</a>
+    <a href="#consultation">線上服務</a>
+    <a href="#faq">常見問題</a>
+  </div>
+  <div class="footer-contact">
+    台北市大安區忠孝東路四段 ×× 號 × 樓　|　02-2XXX-XXXX　|　contact@ziwei-tang.com.tw<br>
+    LINE：ziwei_tang　|　Instagram：@ziweitang_official
+  </div>
+  <div class="footer-bottom">© 2024 紫薇堂命理中心 All Rights Reserved. 本網站內容受著作權法保護。</div>
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>✦ 預約申請成功</h3>
+    <div class="gold-divider" style="margin: 1rem auto;"></div>
+    <p>感謝您的預約！<br>我們將於 24 小時內以 Email 或電話與您確認細節，並提供付款資訊。<br><br>如有急需，歡迎直接撥打：<strong style="color:var(--gold)">02-2XXX-XXXX</strong></p>
+  </div>
+</div>
+
+<script>
+// Star canvas
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 180; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.2,
+      o: Math.random() * 0.6 + 0.1,
+      speed: Math.random() * 0.3 + 0.05
+    });
+  }
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.o += Math.sin(Date.now() * s.speed * 0.001) * 0.005;
+    s.o = Math.max(0.05, Math.min(0.7, s.o));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(201,168,76,${s.o})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+
+resize();
+initStars();
+drawStars();
+window.addEventListener('resize', () => { resize(); initStars(); });
+
+// Bagua
+const bagua = document.getElementById('bagua');
+const symbols = ['☰','☱','☲','☳','☴','☵','☶','☷'];
+symbols.forEach((s, i) => {
+  const el = document.createElement('div');
+  el.className = 'bagua-symbol';
+  el.textContent = s;
+  el.style.transform = `rotate(${i * 45}deg)`;
+  bagua.appendChild(el);
+});
+
+// Timeslot selection
+function selectTime(btn) {
+  document.querySelectorAll('.timeslot').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// FAQ
+function toggleFaq(el) {
+  el.classList.toggle('open');
+  const ans = el.nextElementSibling;
+  ans.classList.toggle('open');
+}
+
+// Booking submit
+function submitBooking() {
+  document.getElementById('successModal').classList.add('active');
+}
+function closeModal() {
+  document.getElementById('successModal').classList.remove('active');
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.service-card, .consult-card, .testimonial, .flow-step').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
